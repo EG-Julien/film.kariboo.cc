@@ -7,11 +7,22 @@ use Psr\Http\Message\ResponseInterface;
 
 class Controller {
     private $container;
+    public $router;
     public static $allocine;
     public static $DB;
 
     function __construct($container) {
         $this->container = $container;
+        $this->router = $this->container->get('router');
+    }
+
+    public function flash($type, $message) {
+        if (!isset($_SESSION["flash"])) {
+            $_SESSION["flash"] = [];
+        }
+         return $_SESSION["flash"] = [
+          $type => $message
+        ];
     }
 
     public static function setAllocine($allocine) {
@@ -23,6 +34,10 @@ class Controller {
     }
 
     public function render($response, $name, $params = []) {
+        if (isset($_SESSION["flash"])) {
+            $params["flash"] = $_SESSION["flash"];
+        }
+        unset($_SESSION["flash"]);
         $this->container->view->render($response, $name, $params);
     }
 
@@ -48,11 +63,6 @@ class Controller {
             return $_SESSION['user'];
         }
         return false;
-    }
-
-    public  function logout() {
-        unset($_SESSION['user']);
-        return;
     }
 
     static function setDB($DB) {

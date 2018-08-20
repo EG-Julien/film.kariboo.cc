@@ -118,7 +118,7 @@
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
             <a href="{{ path_for("dashboard") }}" class="active item">Home</a>
-            <a href="{{ path_for("user_settings") }}" class="item">Settings</a>
+            <a href="{{ path_for("user_settings", {'user': user.login}) }}" class="item">Profil</a>
             <div class="right menu">
                 <div class="item">
                     <a href="{{ path_for("logout") }}" class="ui primary button">Log Out</a>
@@ -130,7 +130,7 @@
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
         <a href="{{ path_for("dashboard") }}" class="active item">Home</a>
-        <a href="{{ path_for("user_settings") }}" class="item">Settings</a>
+        <a href="{{ path_for("user_settings", {'user': user.login}) }}" class="item">Profil</a>
         <a href="{{ path_for("logout") }}" class="item">Log Out</a>
     </div>
 
@@ -145,8 +145,11 @@
                         <i class="sidebar icon"></i>
                     </a>
                     <a href="{{ path_for("dashboard") }}" class="active item">Home</a>
-                    <a href="{{ path_for("user_settings") }}" class="item">Settings</a>
+                    <a href="{{ path_for("user_settings", {'user': user.login}) }}" class="item">Profil</a>
                     <div class="right menu">
+                        <div class="item">
+                            <p>Welcome, {{ user.firstname }}</p>
+                        </div>
                         <div class="item">
                             <a href="{{ path_for("logout") }}" class="ui primary button">Log Out</a>
                         </div>
@@ -157,7 +160,7 @@
             <div class="ui text container">
                 <br><br>
                 <p>Film de la semaine : <h1 class="ui inverted">{{ peculiar_data.movie.originalTitle }} - <small>{{ peculiar_data.movie.productionYear }}</small></h1></p>
-                <iframe width="720" height="360" src="https://uptostream.com/iframe/0yoxc7xeduig" scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
+                <iframe width="720" height="360" src="https://uptostream.com/iframe/{{ movie_of_the_week.uptostream_id }}" scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
             </div>
 
         </div>
@@ -195,7 +198,7 @@
                 <h1>Règles du jeu :</h1>
                 <p style="text-align: justify;">
                     Le but est de voter pour le film que vous préférez dans la liste ci-dessous.
-                    Bien entendu libre à vous de faire une proposition de film via <a href="">ce</a> formulaire.
+                    Bien entendu libre à vous de faire une proposition de film via <a href="#form_id">ce</a> formulaire.
                     Vous ne pouvez pas voter deux fois pour le même film, mais vous pouvez voter pour plusieurs films durant la même semaine.
                     Le jeu se termine le vendredi soir, lors de la mise en ligne du film elu.
                 </p>
@@ -220,6 +223,7 @@
                         <tr>
                             <th>Titre</th>
                             <th>Année</th>
+                            <th>Ajouté par</th>
                             <th>Nombre de vote</th>
                             <th>Vote ?</th>
                         </tr>
@@ -229,6 +233,7 @@
                             <tr>
                                 <td><a target="_blank" href="http://www.allocine.fr/film/fichefilm_gen_cfilm={{ film.allocine_id }}.html">{{ film.raw_title }}</a></td>
                                 <td>{{ film.raw_year }}</td>
+                                <td>{{ film.added_by }}</td>
                                 <td>{{ film.vote_for }}</td>
                                 <td><a href="{{ path_for("vote", {'id': film.id, 'user': user.login}) }}">Vote !</a></td>
                             </tr>
@@ -243,18 +248,23 @@
                     <div class="header">
                         Propose ton film
                     </div>
-                    <p>Remplie le formulaire avec le nom original du film et son année de sortie.</p>
+                    <p>Remplie le formulaire avec le nom original du film et son année de sortie. Tu peux aussi (le plus simple) utiliser son id allociné : http://www.allocine.fr/film/fichefilm_gen_cfilm=<strong>208104</strong>.html</p>
                 </div>
-                <form class="ui form attached fluid segment" method="post">
+                <form class="ui form attached fluid segment" id="form_id" method="post">
                     <div class="two fields">
                         <div class="field">
                             <label>Nom original du film</label>
-                            <input placeholder="Nom original du film" type="text">
+                            <input name="title" placeholder="Nom original du film" type="text">
                         </div>
                         <div class="field">
                             <label>Année de sortie</label>
-                            <input placeholder="Année de sortie" type="text">
+                            <input name="year" placeholder="Année de sortie" type="text">
                         </div>
+                    </div>
+                    <p>Ou</p>
+                    <div class="field">
+                        <label>ID Allociné</label>
+                        <input name="id" placeholder="208104" type="text">
                     </div>
                     <button class="ui blue submit button">Proposer</button>
                 </form>
@@ -266,28 +276,20 @@
             <div class="ui container">
                 <div class="ui stackable inverted divided equal height stackable grid">
                     <div class="three wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <div class="ui inverted link list">
-                            <a href="#" class="item">Sitemap</a>
-                            <a href="#" class="item">Contact Us</a>
-                            <a href="#" class="item">Religious Ceremonies</a>
-                            <a href="#" class="item">Gazebo Plans</a>
-                        </div>
+                        <h4 class="ui inverted header">Amuse toi bien petit oiseau</h4>
                     </div>
                     <div class="three wide column">
-                        <h4 class="ui inverted header">Services</h4>
-                        <div class="ui inverted link list">
-                            <a href="#" class="item">Banana Pre-Order</a>
-                            <a href="#" class="item">DNA FAQ</a>
-                            <a href="#" class="item">How To Access</a>
-                            <a href="#" class="item">Favorite X-Men</a>
-                        </div>
+                        <h4 class="ui inverted header">I'm an EasterEgg</h4>
                     </div>
                     <div class="seven wide column">
-                        <h4 class="ui inverted header">Footer Header</h4>
-                        <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                        <h4 class="ui inverted header">Bugs & Améliorations</h4>
+                        <p>Si vous avez des bugs ou encore des idées pour améliorer le jeu surtout n'hésitait pas a venir m'en parler sur messenger ! Bisous sur vos fesses !</p>
                     </div>
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            var stateObj = { foo: "bar" };
+            history.replaceState(stateObj, "page 3", "/dashboard");
+        </script>
 {% endblock %}

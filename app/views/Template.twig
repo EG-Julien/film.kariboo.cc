@@ -17,8 +17,8 @@
     <!-- Favicons -->
 
     <link rel='dns-prefetch' href='//fonts.googleapis.com'/>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/semantic.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/semantic.css">
     <link href="https://vjs.zencdn.net/7.1.0/video-js.css" rel="stylesheet">
 
     <script
@@ -26,10 +26,26 @@
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous">
     </script>
-    <script src="js/semantic.js"></script>
-    <script src="js/turbolinks.js"></script>
+    <script src="/js/semantic.js"></script>
+    <script src="/js/turbolinks.js"></script>
 </head>
 <body>
+<div class="container">
+    {% if flash.info %}
+        <div class="ui floating message">
+            <i class="close icon"></i>
+            <p>{{ flash.info }}</p>
+        </div>
+    {% endif %}
+
+    {% if flash.error %}
+        <div class="ui negative floating message ">
+            <i class="close icon"></i>
+            <p>{{ flash.error }}</p>
+        </div>
+    {% endif %}
+</div>
+
 {% block content %}
 
 {% endblock %}
@@ -48,5 +64,5 @@
     ;
 </script>
 <script src="https://vjs.zencdn.net/7.1.0/video.js"></script>
-<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="/js/app.js"></script>
 </html>

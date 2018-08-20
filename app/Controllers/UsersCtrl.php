@@ -25,18 +25,52 @@ class UsersCtrl extends Controller {
     public function SignUp(RequestInterface $request, ResponseInterface $response) {
         $data = $request->getParams();
 
-        // TODO : Add unique login & email verification
-
         $DB = $this::getDB();
-        $q = $DB->prepare("INSERT INTO users (login, password, email, firstname, lastname) VALUES (?, ?, ?, ?, ?)");
+
+        $q = $DB->prepare("SELECT * FROM users WHERE login = ? OR email = ?");
         $q->execute([
             $data["login"],
-            sha1($data["password"]),
-            $data["email"],
-            $data["fname"],
-            $data["lname"]
+            $data["email"]
         ]);
 
+        $r = $q->fetchAll();
+
+        if (empty($r)) {
+            $q = $DB->prepare("INSERT INTO users (login, password, email, firstname, lastname) VALUES (?, ?, ?, ?, ?)");
+            $q->execute([
+                $data["login"],
+                sha1($data["password"]),
+                $data["email"],
+                $data["fname"],
+                $data["lname"]
+            ]);
+        } else {
+            $this->flash("error", "Ce nom d'utilisateur ou cet email est déjà utilisé !");
+        }
+
+
         return $response->withRedirect("/");
+    }
+
+    public function Settings($request, $response, $args) {
+        if (!$this->accessAllowed($response)) {
+            return;
+        }
+
+        $user = $args["user"];
+
+        $q = self::getDB()->prepare("SELECT * FROM users WHERE login = ?");
+        $q->execute([
+            $user
+        ]);
+
+        $user = $q->fetch();
+
+        $user->vote_for = count(json_decode($user->vote));
+
+        $this->render($response, "Profil.twig", [
+            "user" => $user
+        ]);
+
     }
 }

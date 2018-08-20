@@ -38,8 +38,9 @@ $app->post('/', \App\Controllers\UsersCtrl::class . ':login')->setName("login_po
 $app->get('/signup', \App\Controllers\HomeCtrl::class . ':SignUp')->setName("signup");
 $app->post('/signup', \App\Controllers\UsersCtrl::class . ':SignUp')->setName("signup");
 $app->get('/dashboard', \App\Controllers\HomeCtrl::class . ':Dashboard')->setName("dashboard");
+$app->post('/dashboard', \App\Controllers\HomeCtrl::class . ':addFilm')->setName("dashboard_post");
 $app->get('/logout', \App\Controllers\HomeCtrl::class . ':Logout')->setName("logout");
-$app->get('/user/settings', \App\Controllers\UsersCtrl::class . 'Settings')->setName("user_settings");
+$app->get('/user/profil/{user}', \App\Controllers\UsersCtrl::class . ':Settings')->setName("user_settings");
 $app->get('/vote/{id}/{user}', \App\Controllers\HomeCtrl::class . ":Vote")->setName("vote");
 
 $app->run();

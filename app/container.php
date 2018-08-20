@@ -2,6 +2,7 @@
 
 $container = $app->getContainer();
 
+
 // Register component on container
 $container['view'] = function ($container) {
 

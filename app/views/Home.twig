@@ -1,0 +1,63 @@
+{% extends 'Template.twig' %}
+
+{% block content %}
+
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+        body > .grid {
+            height: 100%;
+        }
+        .image {
+            margin-top: -100px;
+        }
+        .column {
+            max-width: 450px;
+        }
+    </style>
+
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+                <img src="img/logo/logo.png" class="image">
+                <div class="content">
+                    Log-in to your account
+                    <p class="lead"></p>
+                </div>
+            </h2>
+            <form class="ui large form attached" method="post">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="email" name="email" placeholder="E-mail address" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <button class="ui fluid large teal submit button">Login</button>
+                    <br>
+                    <p><b>You need an account to go further ! </b> <br> Please keep me confidential or you will be banned.</p>
+                </div>
+
+                <div class="ui error message"></div>
+
+            </form>
+            {% if wpass %}
+                <div class="ui bottom attached warning message">
+                    <i class="icon ban"></i>
+                    Wrong password or email !
+                </div>
+            {% endif %}
+
+            <div class="ui message">
+                New to us ?   <a href="{{ path_for("signup") }}">Sign Up</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

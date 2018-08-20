@@ -1,0 +1,77 @@
+{% extends 'Template.twig' %}
+
+{% block content %}
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+        body > .grid {
+            height: 100%;
+        }
+        .image {
+            margin-top: -100px;
+        }
+        .column {
+            max-width: 450px;
+        }
+    </style>
+
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+                <img src="img/logo/logo.png" class="image">
+                <div class="content">
+                    Create your account
+                    <p class="lead"></p>
+                </div>
+            </h2>
+            <div class="ui attached message">
+                <div class="header">
+                    Welcome to our site!
+                </div>
+                <p>Fill out the form below to sign-up for a new account</p>
+            </div>
+            <form class="ui form attached fluid segment" method="post">
+                <div class="two fields">
+                    <div class="field">
+                        <label>First Name</label>
+                        <input placeholder="First Name" name="fname" type="text" required>
+                    </div>
+                    <div class="field">
+                        <label>Last Name</label>
+                        <input placeholder="Last Name" type="text" name="lname" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Username</label>
+                    <input placeholder="Username" type="text" name="login" required>
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="email" placeholder="Email" name="email" required>
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" placeholder="Password" name="password" required>
+                </div>
+                <div class="inline field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="terms/terms.txt">terms and conditions</a></label>
+                    </div>
+                </div>
+                <button class="ui blue submit button">Submit</button>
+            </form>
+            <div class="ui bottom attached warning message">
+                <i class="icon help"></i>
+                Already signed up ? <a href="{{ path_for("home") }}">Login here</a> instead.
+            </div>
+            {% if wpass %}
+                <div class="ui bottom attached warning message">
+                    <i class="icon ban"></i>
+                    Wrong password or email !
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

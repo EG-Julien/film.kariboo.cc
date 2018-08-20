@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+
+<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+<head>
+    <meta charset="utf-8">
+    <title>Kariboo | Films & Series</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Just another WordPress site">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="icon" href="/img/logo/logo.png" type="image/png">
+    <!-- Favicons -->
+
+    <link rel='dns-prefetch' href='//fonts.googleapis.com'/>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/semantic.css">
+    <link href="https://vjs.zencdn.net/7.1.0/video-js.css" rel="stylesheet">
+
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+    </script>
+    <script src="js/semantic.js"></script>
+    <script src="js/turbolinks.js"></script>
+</head>
+<body>
+{% block content %}
+
+{% endblock %}
+</body>
+<script>
+    Turbolinks.start()
+</script>
+<script type="text/javascript">
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+            ;
+        })
+    ;
+</script>
+<script src="https://vjs.zencdn.net/7.1.0/video.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+</html>

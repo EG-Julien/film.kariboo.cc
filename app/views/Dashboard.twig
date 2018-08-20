@@ -1,0 +1,293 @@
+{% extends 'Template.twig' %}
+
+{% block content %}
+<style type="text/css">
+
+    .hidden.menu {
+        display: none;
+    }
+
+    .masthead.segment {
+        min-height: 700px;
+        padding: 1em 0em;
+    }
+    .masthead .logo.item img {
+        margin-right: 1em;
+    }
+    .masthead .ui.menu .ui.button {
+        margin-left: 0.5em;
+    }
+    .masthead h1.ui.header {
+        margin-top: 3em;
+        margin-bottom: 0em;
+        font-size: 4em;
+        font-weight: normal;
+    }
+    .masthead h2 {
+        font-size: 1.7em;
+        font-weight: normal;
+    }
+
+    .ui.vertical.stripe {
+        padding: 8em 0em;
+    }
+    .ui.vertical.stripe h3 {
+        font-size: 2em;
+    }
+    .ui.vertical.stripe .button + h3,
+    .ui.vertical.stripe p + h3 {
+        margin-top: 3em;
+    }
+    .ui.vertical.stripe .floated.image {
+        clear: both;
+    }
+    .ui.vertical.stripe p {
+        font-size: 1.33em;
+    }
+    .ui.vertical.stripe .horizontal.divider {
+        margin: 3em 0em;
+    }
+
+    .quote.stripe.segment {
+        padding: 0em;
+    }
+    .quote.stripe.segment .grid .column {
+        padding-top: 5em;
+        padding-bottom: 5em;
+    }
+
+    .footer.segment {
+        padding: 5em 0em;
+    }
+
+    .secondary.pointing.menu .toc.item {
+        display: none;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .ui.fixed.menu {
+            display: none !important;
+        }
+        .secondary.pointing.menu .item,
+        .secondary.pointing.menu .menu {
+            display: none;
+        }
+        .secondary.pointing.menu .toc.item {
+            display: block;
+        }
+        .masthead.segment {
+            min-height: 350px;
+        }
+        .masthead h1.ui.header {
+            font-size: 2em;
+            margin-top: 1.5em;
+        }
+        .masthead h2 {
+            margin-top: 0.5em;
+            font-size: 1.5em;
+        }
+    }
+
+
+</style>
+    <script>
+        $(document)
+            .ready(function() {
+
+                // fix menu when passed
+                $('.masthead')
+                    .visibility({
+                        once: false,
+                        onBottomPassed: function() {
+                            $('.fixed.menu').transition('fade in');
+                        },
+                        onBottomPassedReverse: function() {
+                            $('.fixed.menu').transition('fade out');
+                        }
+                    })
+                ;
+
+                // create sidebar and attach to menu open
+                $('.ui.sidebar')
+                    .sidebar('attach events', '.toc.item')
+                ;
+
+            })
+        ;
+    </script>
+    <div class="ui large top fixed hidden menu">
+        <div class="ui container">
+            <a href="{{ path_for("dashboard") }}" class="active item">Home</a>
+            <a href="{{ path_for("user_settings") }}" class="item">Settings</a>
+            <div class="right menu">
+                <div class="item">
+                    <a href="{{ path_for("logout") }}" class="ui primary button">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <div class="ui vertical inverted sidebar menu">
+        <a href="{{ path_for("dashboard") }}" class="active item">Home</a>
+        <a href="{{ path_for("user_settings") }}" class="item">Settings</a>
+        <a href="{{ path_for("logout") }}" class="item">Log Out</a>
+    </div>
+
+
+    <!-- Page Contents -->
+    <div class="pusher">
+        <div class="ui inverted vertical masthead center aligned segment">
+
+            <div class="ui container">
+                <div class="ui large secondary inverted pointing menu">
+                    <a class="toc item">
+                        <i class="sidebar icon"></i>
+                    </a>
+                    <a href="{{ path_for("dashboard") }}" class="active item">Home</a>
+                    <a href="{{ path_for("user_settings") }}" class="item">Settings</a>
+                    <div class="right menu">
+                        <div class="item">
+                            <a href="{{ path_for("logout") }}" class="ui primary button">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui text container">
+                <br><br>
+                <p>Film de la semaine : <h1 class="ui inverted">{{ peculiar_data.movie.originalTitle }} - <small>{{ peculiar_data.movie.productionYear }}</small></h1></p>
+                <iframe width="720" height="360" src="https://uptostream.com/iframe/0yoxc7xeduig" scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
+            </div>
+
+        </div>
+
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">SYNOPSIS & DÉTAILS</h3>
+                        <p style="text-align: justify;">
+                            {{ peculiar_data.movie.synopsis }}
+                        </p>
+                        <h4>Directeur(s) & Acteur(s)</h4>
+                        <p>
+                            {{ peculiar_data.movie.castingShort.directors }}
+                            <br><br>
+                            {{ peculiar_data.movie.castingShort.actors }}
+                        </p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img src="{{ peculiar_data.movie.poster.href }}" class="ui large bordered rounded image">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="center aligned column">
+                        <p>Bande d'annonce</p>
+                        {{ peculiar_data.movie.trailerEmbed | raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui vertical stripe segment">
+            <div class="ui text container">
+                <h1>Règles du jeu :</h1>
+                <p style="text-align: justify;">
+                    Le but est de voter pour le film que vous préférez dans la liste ci-dessous.
+                    Bien entendu libre à vous de faire une proposition de film via <a href="">ce</a> formulaire.
+                    Vous ne pouvez pas voter deux fois pour le même film, mais vous pouvez voter pour plusieurs films durant la même semaine.
+                    Le jeu se termine le vendredi soir, lors de la mise en ligne du film elu.
+                </p>
+                <h4 class="ui horizontal header divider">
+                    <a href="#">Film de la semaine prochaine <small>Provisoire</small></a>
+                </h4>
+                    <div class="ui center">
+                        <h1>{{ data_nw.movie.originalTitle }} - <small>{{ data_nw.movie.productionYear }}</small> - <small>{{ movie_of_the_next_week.vote_for }} votes</small></h1>
+                        <h4>Bande d'annonce</h4>
+                        {{ data_nw.movie.trailerEmbed | raw }}
+                        <h4>Synoposis</h4>
+                        <p style="text-align: justify;">
+                            {{ data_nw.movie.synopsis}}
+                        </p>
+                    </div>
+                <h4 class="ui horizontal header divider">
+                    <a href="#">Vote</a>
+                </h4>
+
+                <table class="ui inverted table">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Année</th>
+                            <th>Nombre de vote</th>
+                            <th>Vote ?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%  for film in films %}
+                            <tr>
+                                <td><a target="_blank" href="http://www.allocine.fr/film/fichefilm_gen_cfilm={{ film.allocine_id }}.html">{{ film.raw_title }}</a></td>
+                                <td>{{ film.raw_year }}</td>
+                                <td>{{ film.vote_for }}</td>
+                                <td><a href="{{ path_for("vote", {'id': film.id, 'user': user.login}) }}">Vote !</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4 class="ui horizontal header divider">
+                    <a href="#">Propose ton film</a>
+                </h4>
+                <div class="ui attached message">
+                    <div class="header">
+                        Propose ton film
+                    </div>
+                    <p>Remplie le formulaire avec le nom original du film et son année de sortie.</p>
+                </div>
+                <form class="ui form attached fluid segment" method="post">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Nom original du film</label>
+                            <input placeholder="Nom original du film" type="text">
+                        </div>
+                        <div class="field">
+                            <label>Année de sortie</label>
+                            <input placeholder="Année de sortie" type="text">
+                        </div>
+                    </div>
+                    <button class="ui blue submit button">Proposer</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="ui inverted vertical footer segment">
+            <div class="ui container">
+                <div class="ui stackable inverted divided equal height stackable grid">
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">About</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">Sitemap</a>
+                            <a href="#" class="item">Contact Us</a>
+                            <a href="#" class="item">Religious Ceremonies</a>
+                            <a href="#" class="item">Gazebo Plans</a>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">Services</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">Banana Pre-Order</a>
+                            <a href="#" class="item">DNA FAQ</a>
+                            <a href="#" class="item">How To Access</a>
+                            <a href="#" class="item">Favorite X-Men</a>
+                        </div>
+                    </div>
+                    <div class="seven wide column">
+                        <h4 class="ui inverted header">Footer Header</h4>
+                        <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

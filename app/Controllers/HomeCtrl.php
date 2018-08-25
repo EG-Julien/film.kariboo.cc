@@ -27,19 +27,23 @@ class HomeCtrl extends Controller
             return;
         }
 
-        $q = $this::getDB()->prepare("SELECT * FROM films WHERE film_of_the_week = 1");
+        $q = $this::getDB()->prepare("SELECT * FROM films WHERE film_of_the_week = 1 AND viewed = 0 LIMIT 1");
         $q->execute();
         $movie_of_the_week = $q->fetch();
         $peculiar_data = json_decode($this->getAllocine()->get($movie_of_the_week->allocine_id));
 
-        $q = $this::getDB()->prepare("SELECT * FROM films ORDER BY vote_for DESC LIMIT 1");
+        $q = $this::getDB()->prepare("SELECT * FROM films WHERE film_of_the_week = 0 AND viewed = 0 ORDER BY vote_for DESC LIMIT 1");
         $q->execute();
         $movie_of_the_next_week = $q->fetch();
         $data_nw = json_decode($this->getAllocine()->get($movie_of_the_next_week->allocine_id));
 
-        $q = $this::getDB()->prepare("SELECT * FROM films WHERE film_of_the_week = 0 ORDER BY vote_for DESC ");
+        $q = $this::getDB()->prepare("SELECT * FROM films WHERE film_of_the_week = 0 AND viewed = 0 ORDER BY vote_for DESC ");
         $q->execute();
         $films = $q->fetchAll();
+
+        $q = $this::getDB()->prepare("SELECT * FROM films WHERE viewed = 1 ORDER BY id DESC");
+        $q->execute();
+        $viewed = $q->fetchAll();
 
         $this->render($response, "Dashboard.twig", [
             "user" => $this->get_user(),
@@ -48,6 +52,7 @@ class HomeCtrl extends Controller
             "data_nw" => $data_nw,
             "movie_of_the_next_week" => $movie_of_the_next_week,
             "films" => $films,
+            "viewed" => $viewed,
         ]);
     }
 

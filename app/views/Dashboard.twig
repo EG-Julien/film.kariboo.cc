@@ -190,6 +190,34 @@
                         {{ peculiar_data.movie.trailerEmbed | raw }}
                     </div>
                 </div>
+                <h4 class="ui horizontal header divider">
+                    <a href="#">Film des semaines précédentes</a>
+                </h4>
+                <div class="row">
+                    <h4>Historique des films :</h4>
+                    <table class="ui inverted table">
+                        <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Année</th>
+                            <th>Ajouté par</th>
+                            <th>Nombre de vote</th>
+                            <th>Voir ?</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {%  for film in viewed %}
+                            <tr>
+                                <td><a target="_blank" href="http://www.allocine.fr/film/fichefilm_gen_cfilm={{ film.allocine_id }}.html">{{ film.raw_title }}</a></td>
+                                <td>{{ film.raw_year }}</td>
+                                <td>{{ film.added_by }}</td>
+                                <td>{{ film.vote_for }}</td>
+                                <td><a target="_blank" href="//uptostream.com/{{ film.uptostream_id }}">Voir !</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
